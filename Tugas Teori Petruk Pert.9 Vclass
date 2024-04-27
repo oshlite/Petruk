@@ -1,19 +1,16 @@
 #include <iostream>
-#include <vector>
 #include <string>
 using namespace std;
-
-bool FindWord(vector<vector<char>>& matrik, string kata){
-    int baris=matrik.size();
-    int kolom=matrik[0].size();
+const int m=23;
+bool FindWord(char matrik[m][m], string kata, int baris, int kolom){
     for (char& c : kata){
         if (c >= 'A' && c <= 'Z'){
             c=c-'A'+'a';
         }
     }
-    for (int i=0; i<baris; i++){
+    for (int i=0; i < baris; i++){
         for (int j=0; j <= kolom-kata.length(); j++){
-            string barisStr(matrik[i].begin()+j, matrik[i].begin()+j+kata.length());
+            string barisStr(matrik[i]+j, matrik[i]+j+kata.length());
             for (char& c : barisStr){
                 if (c >= 'A' && c <= 'Z'){
                     c=c-'A'+'a';
@@ -23,9 +20,9 @@ bool FindWord(vector<vector<char>>& matrik, string kata){
         }
     }
     for (int i=0; i <= baris-kata.length(); i++){
-        for (int j=0; j<kolom; j++){
+        for (int j=0; j < kolom; j++){
             string kolomStr;
-            for (int k=i; k<i+kata.length(); k++){
+            for (int k=i; k < i+kata.length(); k++){
                 kolomStr.push_back(matrik[k][j]);
             }
             for (char& c : kolomStr){
@@ -50,7 +47,7 @@ bool FindWord(vector<vector<char>>& matrik, string kata){
             if (diagStr == kata) return true;
         }
     }
-    for (int i=kata.length()-1; i<baris; i++){
+    for (int i=kata.length()-1; i < baris; i++){
         for (int j=0; j <= kolom-kata.length(); j++){
             string diagStr;
             for (int k=0; k<kata.length(); k++){
@@ -66,24 +63,24 @@ bool FindWord(vector<vector<char>>& matrik, string kata){
     }
     return false;
 }
-void FindkeyWord(vector<vector<char>>& matrik, const vector<string>& katakey){
-    for (const string& kata : katakey){
-        bool ditemukan=FindWord(matrik,kata);
+void FindkeyWord(char matrik[m][m], const string katakey[], int jumlah, int baris, int kolom){
+    for (int i=0; i < jumlah; i++){
+        bool ditemukan=FindWord(matrik, katakey[i], baris, kolom);
         if (ditemukan){
-            cout<<"Ada"<<endl;
+            cout << "Ada" << endl;
         } else{
-            cout<<"Tidak Ada"<<endl;
+            cout << "Tidak Ada" << endl;
         }
     }
 }
 int main(){
     int jumlah;
-    cin>>jumlah;
-    vector<string> katakey(jumlah);
-    for (int i=0; i<jumlah; i++){
-        cin>>katakey[i];
+    cin >> jumlah;
+    string katakey[jumlah];
+    for (int i=0; i < jumlah; i++){
+        cin >> katakey[i];
     }
-    vector<vector<char>> matrik={
+    char matrik[m][m]={
        {'A','A','F','L','K','H','P','F','S','S','U','F','I','C','I','C','L','E','S','G','N','N','H'},
        {'S','F','V','R','E','O','M','R','W','L','R','T','T','S','X','O','Q','Q','N','A','O','A','O'},
        {'Q','E','I','A','I','F','X','A','E','I','R','F','V','F','Y','S','X','I','M','I','N','J','I'},
@@ -108,6 +105,6 @@ int main(){
        {'B','F','R','E','E','Z','I','N','G','R','A','I','N','S','L','I','L','G','T','M','E','L','T'},
        {'H','Q','P','Y','L','W','H','F','M','N','F','F','U','F','P','S','W','X','N','U','M','M','V'}
     };
-    FindkeyWord(matrik,katakey);
+    FindkeyWord(matrik, katakey, jumlah, 23, 23);
     return 0;
 }
